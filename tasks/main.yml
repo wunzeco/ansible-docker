@@ -11,3 +11,5 @@
 
 - include: install.yml
   when: docker_upgrade or not docker_installed
+
+- include: config.yml

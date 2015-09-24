@@ -1,0 +1,9 @@
+---
+
+- name: Add docker group
+  user: name={{ item }} groups=docker append=yes createhome=no
+  with_items: docker_allow_users
+
+- name: Update Docker upstart config file
+  template: src=etc.default.docker.j2 dest=/etc/default/docker owner=root group=root mode0644
+  notify: Restart docker
