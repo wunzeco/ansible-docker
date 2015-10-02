@@ -2,7 +2,7 @@
 docker_installed: False
 docker_upgrade: False
 docker_group: docker
-docker_allow_users: []      # Ensure users exist 
+docker_allow_users: []      # Ensure users exist
 docker_opts: []
 docker_http_proxy:
 docker_tmp_dir:
