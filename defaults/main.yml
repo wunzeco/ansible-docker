@@ -7,3 +7,6 @@ docker_opts: []
 docker_http_proxy:
 docker_tmp_dir:
 docker_binary:
+
+docker_compose_version: '1.4.2'
+docker_compose_binary: /usr/local/bin/docker-compose

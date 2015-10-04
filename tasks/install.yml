@@ -5,9 +5,15 @@
 
 - name: Install curl
   apt: name=curl state=present
+ 
+- name: Install python-pip
+  apt: name=python-pip state=present
 
 - name: Install docker
   shell: curl -sSL https://get.docker.com/ | sh
+
+- name: Install docker-compose
+  pip: name=docker-compose version={{ docker_compose_version }} state=present
 
 - name: Add docker group
   user: name={{ item }} groups=docker append=yes createhome=no
