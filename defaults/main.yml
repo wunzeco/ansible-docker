@@ -1,12 +1,12 @@
 ---
-docker_installed: False
-docker_upgrade: False
 docker_group: docker
 docker_allow_users: []      # Ensure users exist
 docker_opts: []
 docker_http_proxy:
 docker_tmp_dir:
 docker_binary:
+
+docker_api_version: '0.4.0'
 
 docker_compose_version: '1.4.2'
 docker_compose_binary: /usr/local/bin/docker-compose
