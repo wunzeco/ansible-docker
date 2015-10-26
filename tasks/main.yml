@@ -1,15 +1,5 @@
 ---
 
-- name: Check if docker is installed
-  shell: dpkg -l docker-engine | grep -E 'ii\s\sdocker-engine'
-  register: installed
-  ignore_errors: true
-
-- name: Skip docker install if already installed
-  set_fact: docker_installed=True
-  when: installed.rc == 0
-
 - include: install.yml
-  when: docker_upgrade or not docker_installed
 
 - include: config.yml
