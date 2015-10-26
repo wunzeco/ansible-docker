@@ -1,5 +1,33 @@
 ---
 
-- include: install.yml
+- name: Install curl
+  apt: name=curl state=present
+ 
+- name: Install python-pip
+  apt: name=python-pip state=present
 
-- include: config.yml
+- name: Add docker apt key
+  apt_key: keyserver=keyserver.ubuntu.com id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: Add docker apt repo to sources list
+  apt_repository: repo="deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main" update_cache=yes state=present
+
+- name: Install docker
+  apt: name=docker-engine state=present
+
+- name: Install docker api client
+  pip: name=docker-py version={{ docker_api_version }} state=present
+
+- name: Install docker-compose
+  pip: name=docker-compose version={{ docker_compose_version }} state=present
+
+- name: Remove obsolete docker init.d service
+  file: dest=/etc/init.d/docker state=absent
+
+- name: Add docker group
+  user: name={{ item }} groups=docker append=yes createhome=no
+  with_items: docker_allow_users
+
+- name: Update Docker upstart config file
+  template: src=etc.default.docker.j2 dest=/etc/default/docker owner=root group=root mode0644
+  notify: Restart docker
