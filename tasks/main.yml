@@ -1,8 +1,5 @@
 ---
 
-- name: Install curl
-  apt: name=curl state=present
- 
 - name: Install python-pip
   apt: name=python-pip state=present
 
