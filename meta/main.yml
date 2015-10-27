@@ -9,6 +9,6 @@ galaxy_info:
      versions:
       - trusty
   categories:
-   - docker
+    - docker
 dependencies: []
   
