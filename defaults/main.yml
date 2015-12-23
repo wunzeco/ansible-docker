@@ -7,9 +7,9 @@ docker_tmp_dir:
 docker_binary:
 docker_port: 2375
 
-docker_api_version: '1.1.0'
+docker_api_version: '1.6.0'
 
-docker_compose_version: '1.2.0'
+docker_compose_version: '1.5.2'
 docker_compose_binary: /usr/local/bin/docker-compose
 
 docker_swarm_create:  false
