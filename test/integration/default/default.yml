@@ -1,0 +1,13 @@
+---
+- hosts: test-kitchen
+
+  vars:
+    docker_allow_users: [ 'ogonna' ]
+
+  pre_tasks:
+    - name: Create docker_allow_users
+      user: name={{ item }} state=present
+      with_items: "{{ docker_allow_users }}"
+
+  roles:
+    - ansible-docker
