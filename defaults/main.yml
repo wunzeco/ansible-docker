@@ -9,7 +9,7 @@ docker_engine_opts: []
 docker_engine_http_proxy:
 docker_engine_tmp_dir:
 docker_engine_binary:
-docker_engine_port: 2375
+docker_engine_port:     2375
 docker_engine_tls_port: 2376
 
 docker_api_version: '1.6.0'
@@ -17,10 +17,22 @@ docker_api_version: '1.6.0'
 docker_compose_version: '1.5.2'
 docker_compose_binary: /usr/local/bin/docker-compose
 
-docker_swarm_create:  false
-docker_swarm_master:  false
-docker_swarm_node_ip: "{{ ansible_eth0.ipv4.address }}"  
-docker_swarm_cluster_id: a1e87a8f8b369ba66b94f11fd3443e20
-docker_swarm_port: 3375
-docker_swarm_tls_port: 3376
+docker_swarm_create_cluster:    false
+
+docker_swarm_port:      3375
+docker_swarm_tls_port:  3376
+docker_swarm_host_ip:  "{{ ansible_default_ipv4.address }}"
+
+docker_swarm_discovery_backend:                 # Mandatory
+docker_swarm_discovery_backend_url:             # Mandatory
+
+docker_swarm_manager: false
+docker_swarm_manager_command_args:
+docker_swarm_manager_command: >
+    "manage {{ docker_swarm_manager_command_args|default('') }} {{ docker_swarm_discovery_backend_url|mandatory }}"
+ 
+docker_swarm_node: false
+docker_swarm_node_command_args:
+docker_swarm_node_command: >
+    "join {{ docker_swarm_node_command_args|default('') }} {{ docker_swarm_discovery_backend_url|mandatory }}"
 

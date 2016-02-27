@@ -50,4 +50,4 @@
 - meta: flush_handlers
 
 - include: swarm.yml
-  when: docker_swarm_create
+  when: docker_swarm_create_cluster

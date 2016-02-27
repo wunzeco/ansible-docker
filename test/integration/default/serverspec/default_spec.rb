@@ -38,3 +38,6 @@ docker_allow_users.each do |u|
   end
 end
 
+describe docker_container('swarm-manager') do
+  it { should be_running }
+end

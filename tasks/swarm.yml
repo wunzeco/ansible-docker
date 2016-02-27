@@ -1,18 +1,43 @@
 ---
 
-- name: Start swarm agent
+- name: Set docker swarm node container command for consul backend
+  set_fact: 
+    docker_swarm_node_command_args: >
+      "--advertise {{ docker_swarm_host_ip }}:{{ docker_engine_port }}"
+  when: "{{ docker_swarm_discovery_backend|mandatory == 'consul' }}"
+
+- name: Start swarm node container
   docker:
     name: swarm-node
     image: swarm
-    command: "join --addr={{ docker_swarm_node_ip }}:{{ docker_port }} token://{{ docker_swarm_cluster_id }}"
-  when: not docker_swarm_master
+    command: "{{ docker_swarm_node_command }}"
+  when: docker_swarm_node
 
-- name: Start swarm master
+- name: Set docker swarm manager container command for consul backend
+  set_fact: 
+    docker_swarm_manager_command_args: >
+      "-H :{{ docker_swarm_port }} --replication --advertise {{ docker_swarm_host_ip }}:{{ docker_swarm_port }}"
+  when: "{{ docker_swarm_discovery_backend|mandatory == 'consul' }}"
+
+- name: Start swarm manager container
   docker:
-    name: swarm-master
+    name: swarm-manager
     image: swarm
-    ports: "{{ docker_port }}:{{ docker_port }}"
-    command: "manage token://{{ docker_swarm_cluster_id }}"
-    env:
-      SERVICE_ID: swarm-master
-  when: docker_swarm_master
+    ports: "{{ docker_swarm_port }}:{{ docker_swarm_port }}"
+    command: "{{ docker_swarm_manager_command }}"
+  when: docker_swarm_manager
+
+## Swarm manager
+# docker_swarm_discovery_backend_url: consul://consul0.dev.priority.internal:8500
+#     sudo docker run -d -p {{ docker_swarm_port }}:{{ docker_swarm_port }} --name sm0 \
+#        swarm manage -H :{{ docker_swarm_port }} --replication \
+#        --advertise {{ ansible_default_ipv4.address }}:{{ docker_swarm_port }} \
+#        {{ docker_swarm_discovery_backend_url }}
+## sudo  docker run -d -p 3375:3375 --name sm0 swarm manage -H :3375 --replication --advertise 10.59.1.80:3375  consul://consul0.dev.priority.internal:8500
+#
+# docker_swarm_node_command:
+#     sudo docker run -d --name sm0 swarm join \
+#        --advertise {{ ansible_default_ipv4.address }}:{{ docker_engine_port }} \
+#        {{ docker_swarm_discovery_backend_url }}
+#sudo docker run -d --name sn0 swarm join --advertise=10.59.1.198:2375 consul://consul0.dev.priority.internal:8500
+
