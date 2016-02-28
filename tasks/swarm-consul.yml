@@ -1,0 +1,30 @@
+---
+
+- name: Set docker swarm node container command for consul backend
+  set_fact: 
+    docker_swarm_node_command_args:
+      "--advertise {{ docker_swarm_host_ip }}:{{ docker_engine_port }}"
+
+- name: Start swarm node container
+  docker:
+    name: swarm-node
+    image: swarm
+    command: "{{ docker_swarm_node_command }}"
+  when: docker_swarm_node
+
+- name: Set docker swarm manager container command for consul backend
+  set_fact: 
+    docker_swarm_manager_command_args:
+      "-H :{{ docker_swarm_port }} --replication \
+      --advertise {{ docker_swarm_host_ip }}:{{ docker_swarm_port }}"
+
+- name: Start swarm manager container
+  docker:
+    name: swarm-manager
+    image: swarm
+    expose:
+      - "{{ docker_swarm_port }}"
+    ports:
+      - "{{ docker_swarm_port }}:{{ docker_swarm_port }}"
+    command: "{{ docker_swarm_manager_command }}"
+  when: docker_swarm_manager

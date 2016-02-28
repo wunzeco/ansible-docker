@@ -1,0 +1,15 @@
+---
+
+- name: Start swarm node container
+  docker:
+    name: swarm-node
+    image: swarm
+    command: "{{ docker_swarm_node_command }}"
+  when: docker_swarm_node
+
+- name: Start swarm manager container
+  docker:
+    name: swarm-manager
+    image: swarm
+    command: "{{ docker_swarm_manager_command }}"
+  when: docker_swarm_manager
