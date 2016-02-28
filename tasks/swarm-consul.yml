@@ -4,6 +4,7 @@
   set_fact: 
     docker_swarm_node_command_args:
       "--advertise {{ docker_swarm_host_ip }}:{{ docker_engine_port }}"
+  when: docker_swarm_node
 
 - name: Start swarm node container
   docker:
@@ -17,6 +18,7 @@
     docker_swarm_manager_command_args:
       "-H :{{ docker_swarm_port }} --replication \
       --advertise {{ docker_swarm_host_ip }}:{{ docker_swarm_port }}"
+  when: docker_swarm_manager
 
 - name: Start swarm manager container
   docker:
