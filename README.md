@@ -20,11 +20,11 @@ Ansible role to install and configure Docker engine
 ```
 
 
-- To configure server as docker swarm master:
+- To configure server as docker swarm manager:
 
 ```
   vars:
-    docker_swarm_master: true
+    docker_swarm_manager: true
     docker_opts: []
 
   roles:

@@ -4,7 +4,7 @@
   vars:
     docker_allow_users: [ 'ogonna' ]
     docker_swarm_create_cluster:    true
-    docker_swarm_master: true
+    docker_swarm_manager: true
     docker_swarm_discovery_backend: token
     docker_swarm_discovery_backend_url: "token://a1e87a8f8b369ba66b94f11fd3443e20"
 

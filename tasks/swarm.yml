@@ -2,7 +2,7 @@
 
 - name: Set docker swarm node container command for consul backend
   set_fact: 
-    docker_swarm_node_command_args: >
+    docker_swarm_node_command_args:
       "--advertise {{ docker_swarm_host_ip }}:{{ docker_engine_port }}"
   when: "{{ docker_swarm_discovery_backend|mandatory == 'consul' }}"
 
@@ -15,7 +15,7 @@
 
 - name: Set docker swarm manager container command for consul backend
   set_fact: 
-    docker_swarm_manager_command_args: >
+    docker_swarm_manager_command_args:
       "-H :{{ docker_swarm_port }} --replication --advertise {{ docker_swarm_host_ip }}:{{ docker_swarm_port }}"
   when: "{{ docker_swarm_discovery_backend|mandatory == 'consul' }}"
 
