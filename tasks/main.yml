@@ -39,7 +39,7 @@
 
 - name: Add users to docker group
   user: name={{ item }} groups=docker append=yes createhome=no
-  with_items: docker_allow_users
+  with_items: "{{ docker_allow_users }}"
 
 - debug: var=docker_engine_opts
 
