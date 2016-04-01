@@ -16,7 +16,7 @@ Ansible role to install and configure Docker engine
       - "-H unix:///var/run/docker.sock"
 
   roles:
-    - ogonna.iwunze.docker
+    - wunzeco.docker
 ```
 
 
