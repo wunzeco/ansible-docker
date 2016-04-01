@@ -28,5 +28,5 @@ Ansible role to install and configure Docker engine
     docker_opts: []
 
   roles:
-    - ogonna.iwunze.docker
+    - wunzeco.docker
 ```
