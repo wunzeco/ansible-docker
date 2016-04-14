@@ -7,6 +7,7 @@
     docker_swarm_manager: true
     docker_swarm_discovery_backend: token
     docker_swarm_discovery_backend_url: "token://a1e87a8f8b369ba66b94f11fd3443e20"
+    docker_swarm_image_version: 1.2.0
 
   pre_tasks:
     - name: Create docker_allow_users

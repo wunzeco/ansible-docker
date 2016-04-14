@@ -11,6 +11,7 @@
     name:    swarm-node
     image:   "swarm:{{ docker_swarm_image_version }}"
     command: "{{ docker_swarm_node_command }}"
+    state:   "{{ _docker_task_state|default('started') }}"
   when: docker_swarm_node
 
 - name: Set docker swarm manager container command for consul backend
@@ -29,4 +30,5 @@
     ports:
       - "{{ docker_swarm_port }}:{{ docker_swarm_port }}"
     command: "{{ docker_swarm_manager_command }}"
+    state:   "{{ _docker_task_state|default('started') }}"
   when: docker_swarm_manager

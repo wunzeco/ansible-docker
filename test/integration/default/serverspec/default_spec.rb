@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 docker_allow_users = [ 'ogonna' ]
+docker_swarm_image_version = '1.2.0'
 
 %w(
   apt-transport-https
@@ -40,4 +41,8 @@ end
 
 describe docker_container('swarm-manager') do
   it { should be_running }
+end
+
+describe docker_image("swarm:#{docker_swarm_image_version}") do
+  it { should exist }
 end
