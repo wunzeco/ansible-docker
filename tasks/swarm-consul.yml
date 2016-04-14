@@ -8,8 +8,8 @@
 
 - name: Start swarm node container
   docker:
-    name: swarm-node
-    image: swarm
+    name:    swarm-node
+    image:   "swarm:{{ docker_swarm_image_version }}"
     command: "{{ docker_swarm_node_command }}"
   when: docker_swarm_node
 
@@ -22,8 +22,8 @@
 
 - name: Start swarm manager container
   docker:
-    name: swarm-manager
-    image: swarm
+    name:   swarm-manager
+    image:  "swarm:{{ docker_swarm_image_version }}"
     expose:
       - "{{ docker_swarm_port }}"
     ports:

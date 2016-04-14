@@ -33,3 +33,4 @@ docker_swarm_manager_command: "manage {{ docker_swarm_manager_command_args|defau
 docker_swarm_node: false
 docker_swarm_node_command_args:
 docker_swarm_node_command: "join {{ docker_swarm_node_command_args|default('') }} {{ docker_swarm_discovery_backend_url|mandatory }}"
+docker_swarm_image_version: 1.2.0
