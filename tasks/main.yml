@@ -1,51 +1,7 @@
 ---
-# Installation steps based on https://docs.docker.com/engine/installation/linux/ubuntulinux/
 
-- name: Install apt-transport-https to ensure apt works with https
-  apt: name=apt-transport-https state=present
-
-- name: Install ca-certificates
-  apt: name=ca-certificates state=present
-
-- name: Install python-pip
-  apt: name=python-pip state=present
-
-- name: Add docker apt key
-  apt_key: keyserver=keyserver.ubuntu.com id={{ docker_apt_key_id }}
-
-- name: Add docker apt repo to sources list
-  apt_repository: repo="{{ docker_apt_repository }}" update_cache=yes state=present
-
-- name: Ensure lxc-docker is not installed
-  apt: name=lxc-docker state=absent purge=yes
-
-- name: Install recommended linux-image-extra kernel package
-  apt: name=linux-image-extra-{{ ansible_kernel }} state=present
-
-- name: Install apparmor
-  apt: name=apparmor state=present
-
-- name: Install docker-engine
-  apt: name=docker-engine={{ docker_engine_version|default('*') }} state=present
-
-- name: Install docker-compose
-  pip: name=docker-compose version={{ docker_compose_version }} state=present
-
-- name: Install docker api client
-  pip: name=docker-py version={{ docker_api_version }} state=present
-
-- name: Remove obsolete docker init.d service
-  file: dest=/etc/init.d/docker state=absent
-
-- name: Add users to docker group
-  user: name={{ item }} groups=docker append=yes createhome=no
-  with_items: "{{ docker_allow_users }}"
-
-- debug: var=docker_engine_opts
-
-- name: Update Docker upstart config file
-  template: src=etc.default.docker.j2 dest=/etc/default/docker owner=root group=root mode=0644
-  notify: Restart docker
+- name: Install docker
+  include: "install-{{ ansible_os_family|lower }}.yml"
 
 - name: Start docker
   service: name=docker enabled=yes state=started

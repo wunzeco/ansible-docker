@@ -3,6 +3,8 @@
 
   vars:
     docker_allow_users: [ 'ogonna' ]
+    docker_engine_opts:
+      - '-H tcp://0.0.0.0:2375'
     docker_swarm_create_cluster:    true
     docker_swarm_manager: true
     docker_swarm_discovery_backend: token

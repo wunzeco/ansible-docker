@@ -1,0 +1,66 @@
+---
+# Installation steps based on https://docs.docker.com/engine/installation/linux/centos/
+
+
+- name: Add docker yum repository config
+  copy:
+    src:   docker.yum.repo
+    dest:  /etc/yum.repos.d/docker.repo
+    owner: root
+    group: root
+    mode:  0644
+
+# Available from Ansible v2.1
+#- name: Add docker yum repository
+#  yum_repository:
+#    name:        dockerrepo
+#    description: "Docker Repository"
+#    baseurl:     "https://yum.dockerproject.org/repo/main/centos/$releasever/"
+#    enabled:     yes
+#    gpgcheck:    yes
+#    gpgkey:      "https://yum.dockerproject.org/gpg"
+
+- name: Install epel-release repository configuration
+  yum: 
+    name: "epel-release"
+    state: present
+
+- name: Install docker-engine
+  yum: 
+    name: "docker-engine-{{ docker_engine_version|default('*') }}"
+    update_cache: yes
+    state: present
+
+- name: Install python-pip
+  yum: 
+    name:  python-pip
+    state: present
+
+- name: Install docker-compose
+  pip: name=docker-compose version={{ docker_compose_version }} state=present
+
+- name: Install docker api client
+  pip: name=docker-py version={{ docker_api_version }} state=present
+
+- name: Add users to docker group
+  user: name={{ item }} groups=docker append=yes createhome=no
+  with_items: "{{ docker_allow_users }}"
+
+- debug: var=docker_engine_opts
+
+- name: Create directory for docker service supplementary config
+  file:
+    path:  /etc/systemd/system/docker.service.d
+    owner: root
+    group: root
+    mode:  0755
+    state: directory
+
+- name: Create docker service supplementary config file
+  template:
+    src:   docker.service.conf.j2
+    dest:  /etc/systemd/system/docker.service.d/docker.conf
+    owner: root
+    group: root
+    mode:  0644
+  notify: Restart docker
