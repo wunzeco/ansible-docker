@@ -14,7 +14,7 @@
   apt_key: keyserver=keyserver.ubuntu.com id={{ docker_apt_key_id }}
 
 - name: Add docker apt repo to sources list
-  apt_repository: repo="{{ docker_apt_repository }}" update_cache=yes state=present
+  apt_repository: repo="{{ docker_apt_repo }}" update_cache=yes state=present
 
 - name: Ensure lxc-docker is not installed
   apt: name=lxc-docker state=absent purge=yes
