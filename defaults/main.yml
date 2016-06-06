@@ -1,10 +1,17 @@
 ---
 docker_group: docker
 docker_allow_users: []      # Ensure users exist
-docker_apt_key_id: '58118E89F3A912897C070ADBF76221572C52609D'
-docker_apt_repository: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
 
-docker_engine_version: '*'    # specify '*' for latest version
+## Package
+docker_apt_key_id: '58118E89F3A912897C070ADBF76221572C52609D'
+docker_apt_repo: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
+docker_yum_gpg_key_url:  'https://yum.dockerproject.org/gpg'
+docker_yum_repo_baseurl: 'https://yum.dockerproject.org/repo/main/centos/$releasever/'
+
+docker_engine_version:  '*'    # specify '*' for latest version
+docker_api_version:     '1.6.0'
+
+## Config
 docker_engine_opts: []
 docker_engine_http_proxy:
 docker_engine_tmp_dir:
@@ -12,11 +19,11 @@ docker_engine_binary:
 docker_engine_port:     2375
 docker_engine_tls_port: 2376
 
-docker_api_version: '1.6.0'
-
+## docker-compose
 docker_compose_version: '1.5.2'
-docker_compose_binary: /usr/local/bin/docker-compose
+docker_compose_binary:   /usr/local/bin/docker-compose
 
+## docker swarm
 docker_swarm_create_cluster:    false
 
 docker_swarm_port:      3375

@@ -1,10 +1,9 @@
 ---
 # Installation steps based on https://docs.docker.com/engine/installation/linux/centos/
 
-
 - name: Add docker yum repository config
-  copy:
-    src:   docker.yum.repo
+  template:
+    src:   docker.yum.repo.j2
     dest:  /etc/yum.repos.d/docker.repo
     owner: root
     group: root
