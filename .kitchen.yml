@@ -7,6 +7,7 @@ provisioner:
   hosts: test-kitchen
   ansible_verbose: false
   ansible_verbosity: 2
+  ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
 
 platforms:
   - name: ubuntu-14.04
