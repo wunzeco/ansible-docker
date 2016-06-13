@@ -30,3 +30,17 @@ Ansible role to install and configure Docker engine
   roles:
     - wunzeco.docker
 ```
+
+
+## Testing
+
+To run this role's integration tests
+
+```
+kitchen test
+```
+
+
+## Dependencies
+
+none
