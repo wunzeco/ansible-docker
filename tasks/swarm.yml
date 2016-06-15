@@ -2,12 +2,41 @@
 
 - debug: msg="Docker Swarm discovery service - {{ docker_swarm_discovery_backend }}"
 
-- name: Get image version of currently running swarm
-  shell: docker ps | grep -E 'swarm-manager|swarm-node' | head -1 | awk '{print $2}'
-  register: swarm
+## swarm-manager
+- name: Get image version of currently running swarm-manager container
+  shell: docker inspect --format='{{ "{{" }} .Config.Image }}' swarm-manager || true
+  when: docker_swarm_manager
+  register: sm_v
 
-- name: Set state of ansible docker task
-  set_fact: _docker_task_state=reloaded
-  when: swarm.stdout.split(':')[1]|default(false) != docker_swarm_image_version
+- name: Get cmd config of currently running swarm-manager container
+  shell: docker inspect --format='{{ "{{" }} .Config.Cmd }}' swarm-manager || true
+  when: docker_swarm_manager
+  register: sm_cmd
 
-- include: swarm-{{ docker_swarm_discovery_backend|mandatory }}.yml
+- name: Set desired state of swarm-manager docker container
+  set_fact: _sm_task_state=reloaded
+  when: docker_swarm_manager and 
+          sm_v.stdout.split(':')[1]|default(false) != docker_swarm_image_version or
+            sm_cmd.stdout|default(false)|regex_replace('\[(.*)\]', '\\1') != docker_swarm_manager_command|regex_replace('\\s+', ' ')
+
+
+## swarm-node
+- name: Get image version of currently running swarm-node container
+  shell: docker inspect --format='{{ "{{" }} .Config.Image }}' swarm-node || true
+  when: docker_swarm_node
+  register: sn_v
+
+- name: Get image version of currently running swarm-node container
+  shell: docker inspect --format='{{ "{{" }} .Config.Cmd }}' swarm-node || true
+  when: docker_swarm_node
+  register: sn_cmd
+
+- name: Set desired state of swarm-node docker container
+  set_fact: _sn_task_state=reloaded
+  when: docker_swarm_node and 
+          sn_v.stdout.split(':')[1]|default(false) != docker_swarm_image_version or
+            sn_cmd.stdout|default(false)|regex_replace('\[(.*)\]', '\\1') != docker_swarm_node_command|regex_replace('\\s+', ' ')
+
+
+- name: Start swarm
+  include: swarm-{{ docker_swarm_discovery_backend|mandatory }}.yml

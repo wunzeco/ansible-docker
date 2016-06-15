@@ -1,17 +1,18 @@
 ---
 
-- name: Start swarm node container
-  docker:
-    name:    swarm-node
-    image:   "swarm:{{ docker_swarm_image_version }}"
-    command: "{{ docker_swarm_node_command }}"
-    state:   "{{ _docker_task_state|default('started') }}"
-  when: docker_swarm_node
-
 - name: Start swarm manager container
   docker:
     name:    swarm-manager
     image:   "swarm:{{ docker_swarm_image_version }}"
     command: "{{ docker_swarm_manager_command }}"
-    state:   "{{ _docker_task_state|default('started') }}"
+    state:   "{{ _sm_task_state|default('started') }}"
   when: docker_swarm_manager
+
+
+- name: Start swarm node container
+  docker:
+    name:    swarm-node
+    image:   "swarm:{{ docker_swarm_image_version }}"
+    command: "{{ docker_swarm_node_command }}"
+    state:   "{{ _sn_task_state|default('started') }}"
+  when: docker_swarm_node
