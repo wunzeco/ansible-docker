@@ -25,3 +25,7 @@
 
   roles:
     - ansible-docker
+
+  post_tasks:
+    - name: Wait 10 seconds for swarm-node to get registered
+      pause: seconds=10
