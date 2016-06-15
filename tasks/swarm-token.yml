@@ -4,6 +4,8 @@
   docker:
     name:    swarm-manager
     image:   "swarm:{{ docker_swarm_image_version }}"
+    ports:
+      - "{{ docker_swarm_port }}:2375"
     command: "{{ docker_swarm_manager_command }}"
     state:   "{{ _sm_task_state|default('started') }}"
   when: docker_swarm_manager

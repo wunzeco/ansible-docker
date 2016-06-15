@@ -37,7 +37,8 @@ Ansible role to install and configure Docker engine
 To run this role's integration tests
 
 ```
-kitchen test
+PLATFORM=ubuntu				# OR centos
+kitchen verify $PLATFORM && kitchen destroy $PLATFORM 
 ```
 
 
