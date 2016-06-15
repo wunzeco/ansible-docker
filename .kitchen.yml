@@ -14,4 +14,11 @@ platforms:
   - name: centos-7.2
 
 suites:
-  - name: default
+  - name: smanager
+    driver:
+      network:
+        - ["private_network", { ip: "172.29.129.184" }]
+  - name: snode
+    driver:
+      network:
+        - ["private_network", { ip: "172.29.129.185" }]
