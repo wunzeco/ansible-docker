@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 docker_allow_users = [ 'ogonna' ]
-docker_swarm_image_version = '1.2.0'
+docker_swarm_image_version = '1.2.3'
 
 %w(
   python-pip
