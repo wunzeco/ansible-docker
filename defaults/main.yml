@@ -9,7 +9,7 @@ docker_yum_gpg_key_url:  'https://yum.dockerproject.org/gpg'
 docker_yum_repo_baseurl: 'https://yum.dockerproject.org/repo/main/centos/$releasever/'
 
 docker_engine_version:  '*'    # specify '*' for latest version
-docker_api_version:     '1.6.0'
+docker_api_version:     '1.8.1'
 
 ## Config
 docker_engine_opts: []
@@ -20,7 +20,7 @@ docker_engine_port:     2375
 docker_engine_tls_port: 2376
 
 ## docker-compose
-docker_compose_version: '1.5.2'
+docker_compose_version: '1.7.1'
 docker_compose_binary:   /usr/local/bin/docker-compose
 
 ## docker swarm
