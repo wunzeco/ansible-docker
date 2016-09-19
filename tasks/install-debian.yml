@@ -19,8 +19,11 @@
 - name: Ensure lxc-docker is not installed
   apt: name=lxc-docker state=absent purge=yes
 
-- name: Install recommended linux-image-extra kernel package
-  apt: name=linux-image-extra-{{ ansible_kernel }} state=present
+- name: Install recommended linux-image-extra kernel packages
+  apt: name="{{ item }}" state=present
+  with_items:
+    - "linux-image-extra-{{ ansible_kernel }}"
+    - "linux-image-extra-virtual"
 
 - name: Install apparmor
   apt: name=apparmor state=present
