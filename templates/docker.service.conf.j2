@@ -1,5 +1,5 @@
 {% if docker_engine_opts|default('false')  %}
 [Service]
 ExecStart=
-ExecStart=/usr/bin/docker daemon -H fd:// {{ docker_engine_opts|join(' ') }}
+ExecStart=/usr/bin/docker daemon {{ docker_engine_opts|join(' ') }}
 {% endif %}
