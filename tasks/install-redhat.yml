@@ -62,6 +62,12 @@
     owner: root
     group: root
     mode:  0644
+  register: supplementary
   notify:
     - Reload systemd
     - Restart docker
+
+- name: Reload systemd if docker service supplementary config file changes
+  command: systemctl daemon-reload
+  when: supplementary|changed
+
