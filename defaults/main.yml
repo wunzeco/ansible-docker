@@ -41,3 +41,6 @@ docker_swarm_node: false
 docker_swarm_node_command_args:
 docker_swarm_node_command: "join {{ docker_swarm_node_command_args|default('') }} {{ docker_swarm_discovery_backend_url|mandatory }}"
 docker_swarm_image_version: 1.2.5
+
+## Configures logrotate for /var/lib/docker/containers/*-json.log
+docker_container_logs_rotate: false
