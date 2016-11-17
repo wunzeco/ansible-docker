@@ -51,6 +51,11 @@ if os[:family] == 'redhat'
 
 end
 
+describe file('/etc/logrotate.d/docker-container-logs') do
+  it { should be_file }
+  it { should be_mode 644 }
+end
+
 # ensure docker-compose binary is available
 describe command('docker-compose -h') do
     its(:exit_status) { should eq 0 }
