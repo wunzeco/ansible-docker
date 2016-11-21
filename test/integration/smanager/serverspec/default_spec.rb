@@ -31,7 +31,12 @@ if os[:family] == 'ubuntu'
     it { should_not exist }
   end
 
-  describe file('/etc/default/docker') do
+  docker_startup_config_file = '/etc/default/docker'
+  if os[:release] == '16.04'
+    docker_startup_config_file = '/etc/systemd/system/docker.service.d/docker.conf'
+  end
+
+  describe file(docker_startup_config_file ) do
     it { should be_file }
     it { should be_mode 644 }
   end
