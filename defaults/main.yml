@@ -21,7 +21,6 @@ docker_engine_tls_port: 2376
 
 ## docker-compose
 docker_compose_version: '1.7.1'
-docker_compose_binary:   /usr/local/bin/docker-compose
 
 ## docker swarm
 docker_swarm_create_cluster:    false
