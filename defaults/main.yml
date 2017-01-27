@@ -20,7 +20,8 @@ docker_engine_port:     2375
 docker_engine_tls_port: 2376
 
 ## docker-compose
-docker_compose_version: '1.7.1'
+docker_compose_version: '1.10.0'
+docker_compose_version_major_minor: "{{ docker_compose_version.split('.')[0] + '.' + docker_compose_version.split('.')[1] }}"
 
 ## docker swarm
 docker_swarm_create_cluster:    false
