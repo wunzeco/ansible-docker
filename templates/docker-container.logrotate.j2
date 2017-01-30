@@ -3,7 +3,6 @@
     rotate 0
     missingok
     nomail
-    copytruncate
     postrotate
         /usr/bin/find /var/lib/docker/containers/ -name "*-json.log.*" -type f -exec rm {} \;
     endscript
