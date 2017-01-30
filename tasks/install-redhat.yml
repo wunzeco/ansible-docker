@@ -40,7 +40,7 @@
 
 - name: Install docker api client
   pip: name=docker-py version={{ docker_api_version }} state=present
-  when: docker_compose_version_major_minor|float <= 1.10
+  when: docker_api_install or docker_compose_version_major_minor|float <= 1.10
 
 - name: Add users to docker group
   user: name={{ item }} groups=docker append=yes createhome=no

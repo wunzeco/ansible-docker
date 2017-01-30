@@ -3,6 +3,7 @@
   hosts: test-kitchen
 
   vars:
+    docker_api_install: true
     docker_allow_users: [ 'ogonna' ]
     docker_engine_opts:
       - '-H tcp://0.0.0.0:2375'

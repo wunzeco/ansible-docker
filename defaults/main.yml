@@ -9,7 +9,8 @@ docker_yum_gpg_key_url:  'https://yum.dockerproject.org/gpg'
 docker_yum_repo_baseurl: 'https://yum.dockerproject.org/repo/main/centos/$releasever/'
 
 docker_engine_version:  '*'    # specify '*' for latest version
-docker_api_version:     '1.8.1'
+docker_api_version:     '1.10.6'
+docker_api_install:     false
 
 ## Config
 docker_engine_opts: []
