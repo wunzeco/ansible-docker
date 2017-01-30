@@ -9,7 +9,6 @@
     command: "{{ docker_swarm_manager_command }}"
     restart_policy: "unless-stopped"
     state:   started
-    #state:   "{{ _sm_task_state|default('started') }}"
   when: docker_swarm_manager
 
 
@@ -20,5 +19,4 @@
     command: "{{ docker_swarm_node_command }}"
     restart_policy: "unless-stopped"
     state:   started
-    #state:   "{{ _sn_task_state|default('started') }}"
   when: docker_swarm_node
