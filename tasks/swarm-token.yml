@@ -1,22 +1,24 @@
 ---
 
 - name: Start swarm manager container
-  docker:
+  docker_container:
     name:    swarm-manager
     image:   "swarm:{{ docker_swarm_image_version }}"
     ports:
       - "{{ docker_swarm_port }}:2375"
     command: "{{ docker_swarm_manager_command }}"
     restart_policy: "unless-stopped"
-    state:   "{{ _sm_task_state|default('started') }}"
+    state:   present
+    #state:   "{{ _sm_task_state|default('started') }}"
   when: docker_swarm_manager
 
 
 - name: Start swarm node container
-  docker:
+  docker_container:
     name:    swarm-node
     image:   "swarm:{{ docker_swarm_image_version }}"
     command: "{{ docker_swarm_node_command }}"
     restart_policy: "unless-stopped"
-    state:   "{{ _sn_task_state|default('started') }}"
+    state:   present
+    #state:   "{{ _sn_task_state|default('started') }}"
   when: docker_swarm_node
