@@ -18,7 +18,7 @@
     ports:
       - "{{ docker_swarm_port }}:{{ docker_swarm_port }}"
     restart_policy: "unless-stopped"
-    state:   present
+    state:   started
     #state:   "{{ _sm_task_state|default('started') }}"
   when: docker_swarm_manager
 
@@ -36,6 +36,6 @@
     image:   "swarm:{{ docker_swarm_image_version }}"
     command: "{{ docker_swarm_node_command }}"
     restart_policy: "unless-stopped"
-    state:   present
+    state:   started
     #state:   "{{ _sn_task_state|default('started') }}"
   when: docker_swarm_node
