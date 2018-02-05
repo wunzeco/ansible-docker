@@ -1,30 +1,14 @@
 require 'spec_helper'
 
 docker_allow_users = [ 'ogonna' ]
-docker_swarm_image_version = '1.2.8'
+docker_swarm_image_version = '1.2.5'
 
-# set PATH for docker in bash, but not in the test's env
-set :path, '/usr/local/bin:$PATH'
-
-if os[:family] == 'ubuntu'
-  %w(
-    python-pip
-    docker-engine
-  ).each do |pkg|
-    describe package(pkg) do
-      it { should be_installed }
-    end
-  end
-end
-
-if os[:family] == 'redhat'
-  %w(
-    python2-pip
-    docker-engine
-  ).each do |pkg|
-    describe package(pkg) do
-      it { should be_installed }
-    end
+%w(
+  python-pip
+  docker-engine
+).each do |pkg|
+  describe package(pkg) do
+    it { should be_installed }
   end
 end
 
