@@ -19,6 +19,17 @@ if os[:family] == 'ubuntu'
   end
 end
 
+if os[:family] == 'redhat'
+  %w(
+    python2-pip
+    docker-engine
+  ).each do |pkg|
+    describe package(pkg) do
+      it { should be_installed }
+    end
+  end
+end
+
 if os[:family] == 'ubuntu'
   %w(
     apt-transport-https
