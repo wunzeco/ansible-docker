@@ -9,7 +9,7 @@ set :path, '/usr/local/bin:$PATH'
 if os[:family] == 'ubuntu'
   %w(
     python-pip
-    docker-engine
+    docker-ce
   ).each do |pkg|
     describe package(pkg) do
       it { should be_installed }
@@ -20,7 +20,7 @@ end
 if os[:family] == 'redhat'
   %w(
     python2-pip
-    docker-engine
+    docker-ce
   ).each do |pkg|
     describe package(pkg) do
       it { should be_installed }

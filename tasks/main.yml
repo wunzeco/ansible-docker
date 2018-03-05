@@ -1,5 +1,7 @@
 ---
 
+- include_vars: "{{ docker_package }}.yml"
+
 - name: Install docker
   include: "install-{{ ansible_os_family|lower }}.yml"
 

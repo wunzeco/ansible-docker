@@ -3,6 +3,8 @@
   hosts: test-kitchen
 
   vars:
+    docker_package: docker-ce
+    docker_package_version: '17.12.1~ce-0~ubuntu'
     docker_api_install: true
     docker_allow_users: [ 'ogonna' ]
     docker_engine_opts:
@@ -20,8 +22,8 @@
     - name: Create docker_allow_users
       user: name={{ item }} state=present
       with_items: "{{ docker_allow_users }}"
- 
-    - set_fact: 
+
+    - set_fact:
         docker_swarm_node_command_args: "--addr={{ ansible_enp0s8.ipv4.address }}:2375"
       when: ansible_distribution|lower == 'centos'
 
