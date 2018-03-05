@@ -17,10 +17,7 @@ docker_api_install:     false
 
 ## Example for installing docker-ce ########
 # docker_package: docker-ce
-# docker_apt_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-# docker_apt_key_id: '9DC858229FC7DD38854AE2D88D81803C0EBFCD88'
 # docker_package_version: '17.12.1~ce-0~ubuntu'
-# docker_api_version:     '3.1.0'
 
 ## Config
 docker_engine_opts: []
@@ -47,7 +44,7 @@ docker_swarm_discovery_backend_url:             # Mandatory
 docker_swarm_manager: false
 docker_swarm_manager_command_args:
 docker_swarm_manager_command: "manage {{ docker_swarm_manager_command_args|default('') }} {{ docker_swarm_discovery_backend_url|mandatory }}"
- 
+
 docker_swarm_node: false
 docker_swarm_node_command_args:
 docker_swarm_node_command: "join {{ docker_swarm_node_command_args|default('') }} {{ docker_swarm_discovery_backend_url|mandatory }}"
