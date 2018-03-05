@@ -24,10 +24,15 @@
     name: "epel-release"
     state: present
 
-- name: Install docker-engine
-  yum: 
-    name: "docker-engine-{{ docker_engine_version|default('*') }}"
-    update_cache: yes
+- name: Ensure docker-engine not installed before installing other docker package
+  yum:
+    name: "docker-engine"
+    state: absent
+  when: docker_package != "docker-engine"
+
+- name: Install docker package
+  yum:
+    name: {{ docker_package }}-{{ docker_package_version|default('*') }}
     state: present
 
 - name: Install python-pip
