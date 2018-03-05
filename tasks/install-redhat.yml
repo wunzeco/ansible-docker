@@ -20,7 +20,7 @@
 #    gpgkey:      "https://yum.dockerproject.org/gpg"
 
 - name: Install epel-release repository configuration
-  yum: 
+  yum:
     name: "epel-release"
     state: present
 
@@ -32,11 +32,11 @@
 
 - name: Install docker package
   yum:
-    name: {{ docker_package }}-{{ docker_package_version|default('*') }}
+    name: "{{ docker_package }}-{{ docker_package_version|default('*') }}"
     state: present
 
 - name: Install python-pip
-  yum: 
+  yum:
     name:  python-pip
     state: present
 
