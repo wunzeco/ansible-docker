@@ -1,38 +1,52 @@
 ---
-# Installation steps based on https://docs.docker.com/engine/installation/linux/centos/
+# Installation steps of docker-engine based on https://docs.docker.com/engine/installation/linux/centos/
+# Installation steps of docker-ce based on https://docs.docker.com/v17.09/engine/installation/linux/docker-ce/centos/
 
-- name: Add docker yum repository config
-  template:
-    src:   docker.yum.repo.j2
-    dest:  /etc/yum.repos.d/docker.repo
-    owner: root
-    group: root
-    mode:  0644
+- name: Add docker yum repository | docker-engine
+  yum_repository:
+    name:        dockerrepo
+    description: "Docker Repository"
+    baseurl:     "{{ docker_yum_repo_baseurl }}"
+    enabled:     yes
+    gpgcheck:    yes
+    gpgkey:      "{{ docker_yum_gpg_key_url }}"
+  when: docker_package == 'docker-engine'
 
-# Available from Ansible v2.1
-#- name: Add docker yum repository
-#  yum_repository:
-#    name:        dockerrepo
-#    description: "Docker Repository"
-#    baseurl:     "https://yum.dockerproject.org/repo/main/centos/$releasever/"
-#    enabled:     yes
-#    gpgcheck:    yes
-#    gpgkey:      "https://yum.dockerproject.org/gpg"
-
-- name: Install epel-release repository configuration
+- name: Install epel-release repository configuration | docker-engine
   yum:
     name: "epel-release"
     state: present
+  when: docker_package == 'docker-engine'
 
-- name: Ensure docker-engine not installed before installing other docker package
+- name: Download docker-ce yum repo file | docker-ce
+  get_url:
+    url: "https://download.docker.com/linux/centos/docker-ce.repo"
+    dest:  /etc/yum.repos.d/docker-ce.repo
+    owner: root
+    group: root
+    mode:  0644
+  when: docker_package == 'docker-ce'
+
+- name: Ensure docker-engine not installed before installing other docker package | docker-ce
   yum:
-    name: "docker-engine"
+    name: "{{ item }}"
     state: absent
-  when: docker_package != "docker-engine"
+  with_items:
+    - docker
+    - docker-common
+    - docker-selinux
+    - docker-engine
+  when: docker_package == "docker-ce"
+
+- name: Set docker package if version is specified
+  set_fact:
+    _docker_package: "{{ docker_package }}-{{ docker_package_version }}"
+  when: docker_package_version != '*'
 
 - name: Install docker package
   yum:
-    name: "{{ docker_package }}-{{ docker_package_version|default('*') }}"
+    name: "{{ _docker_package|default(docker_package) }}"
+    update_cache: yes
     state: present
 
 - name: Install python-pip
