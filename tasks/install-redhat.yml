@@ -12,12 +12,6 @@
     gpgkey:      "{{ docker_yum_gpg_key_url }}"
   when: docker_package == 'docker-engine'
 
-- name: Install epel-release repository configuration | docker-engine
-  yum:
-    name: "epel-release"
-    state: present
-  when: docker_package == 'docker-engine'
-
 - name: Download docker-ce yum repo file | docker-ce
   get_url:
     url: "https://download.docker.com/linux/centos/docker-ce.repo"
@@ -47,6 +41,11 @@
   yum:
     name: "{{ _docker_package|default(docker_package) }}"
     update_cache: yes
+    state: present
+
+- name: Install epel-release repository configuration
+  yum:
+    name: "epel-release"
     state: present
 
 - name: Install python-pip
