@@ -10,7 +10,7 @@ docker_yum_repo_baseurl: 'https://yum.dockerproject.org/repo/main/centos/$releas
 
 # Used when package name is not docker-engine
 docker_package: docker-engine
-docker_package_version:  '17.05.0~ce-0~ubuntu-trusty'    # specify '*' for latest version
+docker_package_version:  "17.05.0~ce-0~ubuntu-{{ ansible_distribution_release }}"    # specify '*' for latest version
 
 docker_api_version:     '1.10.6'
 docker_api_install:     true
