@@ -13,7 +13,7 @@ docker_package: docker-engine
 docker_package_version:  '17.05.0~ce-0~ubuntu-trusty'    # specify '*' for latest version
 
 docker_api_version:     '1.10.6'
-docker_api_install:     false
+docker_api_install:     true
 
 ## Example for installing docker-ce ########
 # docker_package: docker-ce
@@ -28,7 +28,7 @@ docker_engine_port:     2375
 docker_engine_tls_port: 2376
 
 ## docker-compose
-docker_compose_version: '1.10.0'
+docker_compose_version: '1.21.0'
 docker_compose_version_major_minor: "{{ docker_compose_version.split('.')[0] + '.' + docker_compose_version.split('.')[1] }}"
 
 ## docker swarm
