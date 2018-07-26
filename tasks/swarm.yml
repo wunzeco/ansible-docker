@@ -3,4 +3,4 @@
 - debug: msg="Docker Swarm discovery service - {{ docker_swarm_discovery_backend }}"
 
 - name: Start swarm
-  include: swarm-{{ docker_swarm_discovery_backend|mandatory }}.yml
+  include_tasks: swarm-{{ docker_swarm_discovery_backend|mandatory }}.yml

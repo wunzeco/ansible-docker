@@ -3,14 +3,14 @@
 - include_vars: "{{ docker_package }}.yml"
 
 - name: Install docker
-  include: "install-{{ ansible_os_family|lower }}.yml"
+  include_tasks: "install-{{ ansible_os_family|lower }}.yml"
 
 - name: Start docker
   service: name=docker enabled=yes state=started
 
 - meta: flush_handlers
 
-- include: swarm.yml
+- include_tasks: swarm.yml
   when: docker_swarm_create_cluster
 
 - name: Create logrotate config for docker container logs
