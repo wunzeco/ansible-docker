@@ -8,7 +8,8 @@
   apt: name=ca-certificates state=present
 
 - name: Install python-pip
-  apt: name=python-pip state=present
+  apt: name={{ item }} state=present
+  with_items: [python-pip, python-pip3]
 
 - name: Add docker apt key
   apt_key: keyserver=keyserver.ubuntu.com id={{ docker_apt_key_id }}
