@@ -25,7 +25,7 @@
 
     - set_fact:
         docker_swarm_node_command_args: "--addr={{ ansible_enp0s8.ipv4.address }}:2375"
-      when: ansible_distribution|lower == 'centos'
+      when: ansible_service_mgr == 'systemd'
 
   roles:
     - ansible-docker
@@ -33,3 +33,10 @@
   post_tasks:
     - name: Wait 10 seconds for swarm-node to get registered
       pause: seconds=10
+
+    #- name: Run nginx container on swarm cluster
+    #  docker_container:
+    #    name: test-nginx
+    #    image: nginx
+    #    docker_url: "tcp://172.29.129.184:3375"
+    #    state: started
