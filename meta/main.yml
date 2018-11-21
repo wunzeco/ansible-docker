@@ -1,13 +1,17 @@
 ---
 galaxy_info:
   author: "Ogonna Iwunze"
-  company: EqualExperts
+  company: None
   license: BSD
   min_ansible_version: 1.9
   platforms:
+    - name: EL
+      versions:
+        - 7
     - name: Ubuntu
       versions:
         - trusty
+        - xenial
   categories:
     - docker
 dependencies: []

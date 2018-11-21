@@ -1,0 +1,45 @@
+---
+- name: Docker Engine & Swarm Manager
+  hosts: test-kitchen
+
+  vars:
+    docker_package: docker-ce
+    docker_package_version: '*'
+    docker_api_install: true
+    docker_allow_users: [ 'ogonna' ]
+    docker_engine_opts:
+      - '-H tcp://0.0.0.0:2375'
+      - '-H unix:///var/run/docker.sock'
+    docker_swarm_manager:           true
+    docker_swarm_create_cluster:    true
+    docker_swarm_discovery_backend: token
+    docker_swarm_discovery_backend_url: "token://a1e87a8f8b369ba66b94f11fd3443e20"
+    docker_swarm_image_version: 1.2.8
+    docker_container_logs_rotate: true
+
+  pre_tasks:
+    - name: Create docker_allow_users
+      user: name={{ item }} state=present
+      with_items: "{{ docker_allow_users }}"
+
+  roles:
+    - ansible-docker
+
+
+## Move to test-kitchen suite for swarm node
+#- name: Docker Engine & Swarm Node
+#  hosts: test-kitchen
+#
+#  vars:
+#    docker_engine_opts:
+#      - '-H tcp://0.0.0.0:2375'
+#      - '-H unix:///var/run/docker.sock'
+#    docker_swarm_node:              true
+#    docker_swarm_create_cluster:    true
+#    docker_swarm_discovery_backend: token
+#    docker_swarm_discovery_backend_url: "token://a1e87a8f8b369ba66b94f11fd3443e20"
+#    docker_swarm_node_command_args: "--addr={{ ansible_default_ipv4.address }}:2375"
+#    docker_swarm_image_version: 1.2.3
+#
+#  roles:
+#    - ansible-docker

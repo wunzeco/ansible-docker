@@ -1,0 +1,9 @@
+{% if docker_engine_opts|default('false')  %}
+[Service]
+ExecStart=
+{% if ansible_service_mgr == 'systemd' %}
+ExecStart=/usr/bin/dockerd {{ docker_engine_opts|join(' ') }}
+{% else %}
+ExecStart=/usr/bin/docker daemon {{ docker_engine_opts|join(' ') }}
+{% endif %}
+{% endif %}

@@ -1,19 +1,6 @@
 ---
 
-- name: Set docker swarm node container command for consul backend
-  set_fact: 
-    docker_swarm_node_command_args:
-      "--advertise {{ docker_swarm_host_ip }}:{{ docker_engine_port }}"
-  when: docker_swarm_node
-
-- name: Start swarm node container
-  docker:
-    name:    swarm-node
-    image:   "swarm:{{ docker_swarm_image_version }}"
-    command: "{{ docker_swarm_node_command }}"
-    state:   "{{ _docker_task_state|default('started') }}"
-  when: docker_swarm_node
-
+## swarm-manager
 - name: Set docker swarm manager container command for consul backend
   set_fact: 
     docker_swarm_manager_command_args:
@@ -22,13 +9,31 @@
   when: docker_swarm_manager
 
 - name: Start swarm manager container
-  docker:
-    name:   swarm-manager
-    image:  "swarm:{{ docker_swarm_image_version }}"
+  docker_container:
+    name:    swarm-manager
+    image:   "swarm:{{ docker_swarm_image_version }}"
+    command: "{{ docker_swarm_manager_command }}"
     expose:
       - "{{ docker_swarm_port }}"
     ports:
       - "{{ docker_swarm_port }}:{{ docker_swarm_port }}"
-    command: "{{ docker_swarm_manager_command }}"
-    state:   "{{ _docker_task_state|default('started') }}"
+    restart_policy: "unless-stopped"
+    state:   started
   when: docker_swarm_manager
+
+
+## swarm-node
+- name: Set docker swarm node container command for consul backend
+  set_fact: 
+    docker_swarm_node_command_args:
+      "--advertise {{ docker_swarm_host_ip }}:{{ docker_engine_port }}"
+  when: docker_swarm_node
+
+- name: Start swarm node container
+  docker_container:
+    name:    swarm-node
+    image:   "swarm:{{ docker_swarm_image_version }}"
+    command: "{{ docker_swarm_node_command }}"
+    restart_policy: "unless-stopped"
+    state:   started
+  when: docker_swarm_node

@@ -30,3 +30,18 @@ Ansible role to install and configure Docker engine
   roles:
     - wunzeco.docker
 ```
+
+
+## Testing
+
+To run this role's integration tests
+
+```
+PLATFORM=ubuntu-1604      # OR centos OR ubuntu-1404
+kitchen verify $PLATFORM && kitchen destroy $PLATFORM
+```
+
+
+## Dependencies
+
+none

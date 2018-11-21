@@ -5,11 +5,36 @@ driver:
 provisioner:
   name: ansible_playbook
   hosts: test-kitchen
-  ansible_verbose: false
+  require_pip: true
+  require_ansible_repo: false
+  ansible_version:  2.5.6.0
+  ansible_verbose:  false
   ansible_verbosity: 2
+  ansible_diff: true
+  ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
+  ignore_paths_from_root:
+    - .kitchen
 
 platforms:
   - name: ubuntu-14.04
+    driver:
+      box: ubuntu/trusty64
+  - name: ubuntu-16.04
+    driver:
+      box: ubuntu/xenial64
+  - name: centos-7.2
+    driver:
+      box: bento/centos-7.2
 
 suites:
-  - name: default
+  - name: smanager
+    driver:
+      network:
+        - ["private_network", { ip: "172.29.129.184" }]
+  - name: snode
+    driver:
+      network:
+        - ["private_network", { ip: "172.29.129.185" }]
+
+transport:
+  max_ssh_sessions: 4

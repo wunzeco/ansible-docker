@@ -2,12 +2,5 @@
 
 - debug: msg="Docker Swarm discovery service - {{ docker_swarm_discovery_backend }}"
 
-- name: Get image version of currently running swarm
-  shell: docker ps | grep -E 'swarm-manager|swarm-node' | head -1 | awk '{print $2}'
-  register: swarm
-
-- name: Set state of ansible docker task
-  set_fact: _docker_task_state=reloaded
-  when: swarm.stdout.split(':')[1]|default(false) != docker_swarm_image_version
-
-- include: swarm-{{ docker_swarm_discovery_backend|mandatory }}.yml
+- name: Start swarm
+  include_tasks: swarm-{{ docker_swarm_discovery_backend|mandatory }}.yml

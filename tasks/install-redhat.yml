@@ -1,0 +1,106 @@
+---
+# Installation steps of docker-engine based on https://docs.docker.com/engine/installation/linux/centos/
+# Installation steps of docker-ce based on https://docs.docker.com/v17.09/engine/installation/linux/docker-ce/centos/
+
+- name: Add docker yum repository | docker-engine
+  yum_repository:
+    name:        dockerrepo
+    description: "Docker Repository"
+    baseurl:     "{{ docker_yum_repo_baseurl }}"
+    enabled:     yes
+    gpgcheck:    yes
+    gpgkey:      "{{ docker_yum_gpg_key_url }}"
+  when: docker_package == 'docker-engine'
+
+- name: Download docker-ce yum repo file | docker-ce
+  get_url:
+    url: "https://download.docker.com/linux/centos/docker-ce.repo"
+    dest:  /etc/yum.repos.d/docker-ce.repo
+    owner: root
+    group: root
+    mode:  0644
+  when: docker_package == 'docker-ce'
+
+- name: Ensure docker-engine not installed before installing other docker package | docker-ce
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker
+    - docker-common
+    - docker-selinux
+    - docker-engine
+  when: docker_package == "docker-ce"
+
+- name: Set docker package if version is specified
+  set_fact:
+    _docker_package: "{{ docker_package }}-{{ docker_package_version }}"
+  when: docker_package_version != '*'
+
+- name: Install docker package
+  yum:
+    name: "{{ _docker_package|default(docker_package) }}"
+    update_cache: yes
+    state: present
+
+- name: Install epel-release repository configuration
+  yum:
+    name: "epel-release"
+    state: present
+
+- name: Install python-pip
+  yum:
+    name:  python-pip
+    state: present
+
+# WARN: docker-compose pip package >= 1.10.0 installs docker pip package which
+#       conflicts with docker-py required by Ansible docker_container module.
+#       So install docker-compose binary directly as workaround.
+#- name: Install docker-compose
+#  pip: name=docker-compose version={{ docker_compose_version }} state=present
+
+- name: Install docker-compose
+  get_url:
+    url:   "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
+    dest:  /usr/local/bin/docker-compose
+    owner: root
+    group: root
+    mode:  0755
+
+- name: Uninstall docker-py (deprecated api client)
+  pip: name=docker-py state=absent
+
+- name: Install docker api client
+  pip: name=docker version={{ docker_api_version }} state=present
+  when: docker_api_install
+
+- name: Add users to docker group
+  user: name={{ item }} groups=docker append=yes createhome=no
+  with_items: "{{ docker_allow_users }}"
+
+- debug: var=docker_engine_opts
+
+- name: Create directory for docker service supplementary config
+  file:
+    path:  /etc/systemd/system/docker.service.d
+    owner: root
+    group: root
+    mode:  0755
+    state: directory
+
+- name: Create docker service supplementary config file
+  template:
+    src:   docker.service.conf.j2
+    dest:  /etc/systemd/system/docker.service.d/docker.conf
+    owner: root
+    group: root
+    mode:  0644
+  register: supplementary
+  notify:
+    - Reload systemd
+    - Restart docker
+
+- name: Reload systemd if docker service supplementary config file changes
+  command: systemctl daemon-reload
+  when: supplementary|changed
+
