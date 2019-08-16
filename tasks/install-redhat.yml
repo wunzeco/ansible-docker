@@ -68,7 +68,12 @@
     mode:  0755
 
 - name: Uninstall docker-py (deprecated api client)
-  pip: name=docker-py state=absent
+  pip: 
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker-py
+    - docker
 
 - name: Install docker api client
   pip: name=docker version={{ docker_api_version }} state=present
