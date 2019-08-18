@@ -40,7 +40,6 @@
 - name: Install docker package
   yum:
     name: "{{ _docker_package|default(docker_package) }}"
-    update_cache: yes
     state: present
 
 - name: Install epel-release repository configuration
