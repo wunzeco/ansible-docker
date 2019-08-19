@@ -32,6 +32,9 @@
     - docker-engine
   when: docker_package == "docker-ce"
 
+- name: Ensure all yum transactions are finished
+  shell: yum-complete-transaction --cleanup-only
+
 - name: Set docker package if version is specified
   set_fact:
     _docker_package: "{{ docker_package }}-{{ docker_package_version }}"
