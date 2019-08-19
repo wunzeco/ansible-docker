@@ -103,6 +103,14 @@
     immediate: yes
     state: enabled
 
+- name: Configure firewalld for swarm node
+  firewalld:
+    port: 2375/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: docker_swarm_node
+
 - name: Create docker service supplementary config file
   template:
     src:   docker.service.conf.j2
