@@ -33,7 +33,7 @@
   when: docker_package == "docker-ce"
 
 - name: Ensure all yum transactions are finished
-  shell: yum-complete-transaction --cleanup-only
+  shell: yum clean all && yum-complete-transaction --cleanup-only
 
 - name: Set docker package if version is specified
   set_fact:
@@ -94,6 +94,14 @@
     group: root
     mode:  0755
     state: directory
+
+- name: Configure firewalld for docker
+  firewalld:
+    zone: trusted
+    interface: docker0
+    permanent: yes
+    immediate: yes
+    state: enabled
 
 - name: Create docker service supplementary config file
   template:
