@@ -28,12 +28,13 @@
   with_items:
     - docker
     - docker-common
-    - docker-selinux
     - docker-engine
   when: docker_package == "docker-ce"
 
 - name: Ensure all yum transactions are finished
   shell: yum clean all && yum-complete-transaction --cleanup-only
+  register: yum
+  changed_when: "'No unfinished transactions left' not in yum.stdout" 
 
 - name: Set docker package if version is specified
   set_fact:
@@ -75,7 +76,6 @@
     state: absent
   with_items:
     - docker-py
-    - docker
 
 - name: Install docker api client
   pip: name=docker version={{ docker_api_version }} state=present
