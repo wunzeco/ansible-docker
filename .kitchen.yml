@@ -1,40 +1,68 @@
 ---
 driver:
-  name: vagrant
+  name: docker
 
 provisioner:
   name: ansible_playbook
   hosts: test-kitchen
-  require_pip: true
+  require_chef_for_busser: false
+  require_ansible_omnibus: false
   require_ansible_repo: false
-  ansible_version:  2.5.6.0
-  ansible_verbose:  false
+  ansible_version: 2.5.6.0
+  ansible_verbose: false
   ansible_verbosity: 2
-  ansible_diff: true
   ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
   ignore_paths_from_root:
     - .kitchen
 
 platforms:
-  - name: ubuntu-14.04
-    driver:
-      box: ubuntu/trusty64
   - name: ubuntu-16.04
-    driver:
-      box: ubuntu/xenial64
+    driver_config:
+      image: solita/ubuntu-systemd
+      platform: ubuntu
+      privileged: true
+      run_command: /sbin/init
+      provision_command:
+        - apt-get update
+        - apt-get install -y iproute git python-pip curl
+        - pip install ansible pyopenssl
   - name: centos-7.2
-    driver:
-      box: bento/centos-7.2
+    driver_config:
+      image: centos/systemd
+      platform: centos
+      privileged: true
+      run_command: /sbin/init
+      provision_command:
+        - yum install -y iproute tuned epel-release ansible
+        # https://github.com/CentOS/CentOS-Dockerfiles/issues/173
+        - systemctl enable systemd-user-sessions.service && ln -s /usr/lib/systemd/system/systemd-user-sessions.service /etc/systemd/system/default.target.wants/systemd-user-sessions.service
+
+verifier:
+  name: serverspec
+  default_pattern: true
 
 suites:
   - name: smanager
-    driver:
-      network:
-        - ["private_network", { ip: "172.29.129.184" }]
+    driver_config:
+      hostname: smanager.internal
+      publish_all: true
+      instance_name: smanager
+      run_options:
+        network: consul-net
+        ip: 172.29.129.184
   - name: snode
-    driver:
-      network:
-        - ["private_network", { ip: "172.29.129.185" }]
+    driver_config:
+      hostname: snode.internal
+      publish_all: true
+      instance_name: snode
+      run_options:
+        network: consul-net
+        ip: 172.29.129.185
+
+
+lifecycle:
+  pre_create:
+    - docker network create consul-net --subnet=172.29.129.0/24 || true
 
 transport:
   max_ssh_sessions: 4

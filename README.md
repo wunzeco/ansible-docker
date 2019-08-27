@@ -16,7 +16,7 @@ Ansible role to install and configure Docker engine
       - "-H unix:///var/run/docker.sock"
 
   roles:
-    - wunzeco.docker
+    - o2-priority.docker
 ```
 
 
@@ -28,18 +28,19 @@ Ansible role to install and configure Docker engine
     docker_opts: []
 
   roles:
-    - wunzeco.docker
+    - o2-priority.docker
 ```
-
 
 ## Testing
+To run integration tests of this role
 
-To run this role's integration tests
+PLATFORM = ubuntu or centos
+```
+kitchen test $PLATFORM --destroy=never && docker kill smanager snode && docker rm smanager snode
+```
 
-```
-PLATFORM=ubuntu-1604      # OR centos OR ubuntu-1404
-kitchen verify $PLATFORM && kitchen destroy $PLATFORM
-```
+> **Note:**
+> `--destroy=never` must be supplied because multiple nodes are required to be running for all the tests to pass. As a consequence of this `$PLATFORM` must also be specified for the `kitchen test` command otherwise it will not work because of the `instance_name` property. The `docker` commands remove the left over containers for the next platform run
 
 
 ## Dependencies
