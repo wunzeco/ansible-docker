@@ -1,0 +1,5 @@
+---
+- src: git@github.com:o2-priority/ansible-consul.git
+  version: master
+  scm: git
+  name: o2-priority.consul

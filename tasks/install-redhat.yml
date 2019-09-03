@@ -98,6 +98,7 @@
 - name: Check firewalld configuration
   shell: firewall-cmd --list-interfaces --zone=trusted
   register: firewall_result
+  when: configure_firewalld
 
 - name: Configure firewalld for docker
   firewalld:
@@ -106,11 +107,12 @@
     permanent: yes
     immediate: yes
     state: enabled
-  when: "'docker0' not in firewall_result.stdout"
+  when: "configure_firewalld and 'docker0' not in firewall_result.stdout"
 
 - name: Check firewalld configuration
   shell: firewall-cmd --list-ports
   register: firewall_result
+  when: configure_firewalld
 
 - name: Configure firewalld for swarm node
   firewalld:
@@ -118,7 +120,7 @@
     permanent: yes
     immediate: yes
     state: enabled
-  when: "docker_swarm_node and '2375/tcp' not in firewall_result.stdout"
+  when: "configure_firewalld and docker_swarm_node and '2375/tcp' not in firewall_result.stdout"
 
 - name: Create docker service supplementary config file
   template:
