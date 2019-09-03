@@ -1,0 +1,5 @@
+{
+{% if docker_data_root|default('false') %}
+    "data-root": "{{ docker_data_root }}"
+{% endif %}
+}
