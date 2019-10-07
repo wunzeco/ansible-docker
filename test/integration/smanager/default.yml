@@ -4,7 +4,8 @@
 
   vars:
     docker_package: docker-ce
-    docker_package_version: '*'
+    docker_package_version: '17.12.1*'
+    docker_api_version: '2.7.0'
     docker_api_install: true
     docker_allow_users: [ 'ogonna' ]
     docker_engine_opts:
@@ -12,34 +13,26 @@
       - '-H unix:///var/run/docker.sock'
     docker_swarm_manager:           true
     docker_swarm_create_cluster:    true
-    docker_swarm_discovery_backend: token
-    docker_swarm_discovery_backend_url: "token://a1e87a8f8b369ba66b94f11fd3443e20"
+    docker_swarm_discovery_backend: consul
+    docker_swarm_discovery_backend_url: "consul://{{ ansible_default_ipv4.address }}:8500"
     docker_swarm_image_version: 1.2.8
     docker_container_logs_rotate: true
+
+    consul_datacenter:  kitchenDC
+    consul_encrypt_key: '74d+D4bl59FeKo0r+U5lSA=='
+    consul_nodes:
+      - "172.29.129.184"
+    consul_bind_ip: "{{ ansible_default_ipv4.address }}"
 
   pre_tasks:
     - name: Create docker_allow_users
       user: name={{ item }} state=present
       with_items: "{{ docker_allow_users }}"
 
+    - name: Disable firewalld
+      set_fact: 
+        configure_firewalld: false    # Can't run firewalld https://github.com/moby/moby/issues/20026
+
   roles:
+    - o2-priority.consul
     - ansible-docker
-
-
-## Move to test-kitchen suite for swarm node
-#- name: Docker Engine & Swarm Node
-#  hosts: test-kitchen
-#
-#  vars:
-#    docker_engine_opts:
-#      - '-H tcp://0.0.0.0:2375'
-#      - '-H unix:///var/run/docker.sock'
-#    docker_swarm_node:              true
-#    docker_swarm_create_cluster:    true
-#    docker_swarm_discovery_backend: token
-#    docker_swarm_discovery_backend_url: "token://a1e87a8f8b369ba66b94f11fd3443e20"
-#    docker_swarm_node_command_args: "--addr={{ ansible_default_ipv4.address }}:2375"
-#    docker_swarm_image_version: 1.2.3
-#
-#  roles:
-#    - ansible-docker

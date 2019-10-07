@@ -1,4 +1,4 @@
-require 'spec_helper'
+require '/tmp/kitchen/spec/spec_helper.rb'
 
 docker_allow_users = [ 'ogonna' ]
 docker_swarm_image_version = '1.2.8'

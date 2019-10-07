@@ -8,12 +8,15 @@ provisioner:
   require_chef_for_busser: false
   require_ansible_omnibus: false
   require_ansible_repo: false
+  requirements_path: requirements.yml
   ansible_version: 2.5.6.0
   ansible_verbose: false
   ansible_verbosity: 2
   ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
   ignore_paths_from_root:
     - .kitchen
+  ssh_known_hosts:
+    - github.com
 
 platforms:
   - name: ubuntu-16.04
@@ -33,7 +36,7 @@ platforms:
       privileged: true
       run_command: /sbin/init
       provision_command:
-        - yum install -y iproute tuned epel-release ansible
+        - yum install -y iproute tuned epel-release ansible git python-pip
         # https://github.com/CentOS/CentOS-Dockerfiles/issues/173
         - systemctl enable systemd-user-sessions.service && ln -s /usr/lib/systemd/system/systemd-user-sessions.service /etc/systemd/system/default.target.wants/systemd-user-sessions.service
 
@@ -44,25 +47,25 @@ verifier:
 suites:
   - name: smanager
     driver_config:
-      hostname: smanager.internal
       publish_all: true
+      hostname: smanager.internal
       instance_name: smanager
       run_options:
-        network: consul-net
+        network: docker-net
         ip: 172.29.129.184
   - name: snode
     driver_config:
-      hostname: snode.internal
       publish_all: true
+      hostname: snode.internal
       instance_name: snode
       run_options:
-        network: consul-net
+        network: docker-net
         ip: 172.29.129.185
 
 
 lifecycle:
   pre_create:
-    - docker network create consul-net --subnet=172.29.129.0/24 || true
+    - docker network create docker-net --subnet=172.29.129.0/24 || true
 
 transport:
-  max_ssh_sessions: 4
+  forward_agent: true
