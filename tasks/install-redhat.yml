@@ -95,6 +95,12 @@
     mode:  0755
     state: directory
 
+- name: Start firewalld
+  systemd:
+    name: firewalld
+    state: started
+  when: configure_firewalld
+
 - name: Check firewalld configuration
   shell: firewall-cmd --list-interfaces --zone=trusted
   register: firewall_result
