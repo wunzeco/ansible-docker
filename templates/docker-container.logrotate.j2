@@ -1,4 +1,4 @@
-/var/lib/docker/containers/*/*-json.log {
+/data/docker/containers/*/*-json.log {
     weekly
     rotate 0
     maxsize 500M
@@ -7,6 +7,6 @@
     missingok
     nomail
     postrotate
-        /usr/bin/find /var/lib/docker/containers/ -name "*-json.log.*" -type f -exec rm {} \;
+        /usr/bin/find /data/docker/containers/ -name "*-json.log.*" -type f -exec rm {} \;
     endscript
 }

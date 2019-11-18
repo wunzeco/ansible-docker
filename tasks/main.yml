@@ -19,3 +19,13 @@
     dest:  /etc/logrotate.d/docker-container-logs
     mode:  0644
   when: docker_container_logs_rotate
+
+- name: Set SELinux context for log files for logrotate
+  sefcontext:
+    ftype: a
+    target: "{{ docker_data_root }}/containers/*/*-json.log"
+    setype: var_log_t
+    state: present
+
+- name: Apply new SELinux file context to filesystem
+  command: "restorecon -irv {{ docker_data_root }}/containers"
