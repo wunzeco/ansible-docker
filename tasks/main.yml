@@ -23,8 +23,8 @@
 - name: Set SELinux context for log files for logrotate
   sefcontext:
     ftype: a
-    target: "{{ docker_data_root }}/containers/*/*-json.log"
-    setype: var_log_t
+    target: "{{ docker_data_root }}/containers/.*/.*\\.log"
+    setype: container_log_t
     state: present
 
 - name: Apply new SELinux file context to filesystem
