@@ -37,7 +37,7 @@
     state: absent
 
 #TODO: remove once applied to all env
-- name: Set SELinux context for containers
+- name: Remove SELinux context for containers
   sefcontext:
     ftype: a
     target: "{{ docker_data_root }}/containers(/.*)?"
@@ -59,4 +59,4 @@
     state: present
 
 - name: Apply new SELinux file context to filesystem
-  command: "restorecon -rv {{ docker_data_root }}/containers"
+  command: "restorecon -rv {{ docker_data_root }}"
