@@ -20,6 +20,7 @@
     mode:  0644
   when: docker_container_logs_rotate
 
+#TODO: remove once applied to all env
 - name: Remove existing SELinux context
   sefcontext:
     ftype: a
@@ -27,6 +28,7 @@
     setype: container_log_t
     state: absent
 
+#TODO: remove once applied to all env
 - name: Remove existing SELinux context
   sefcontext:
     ftype: a
@@ -34,10 +36,18 @@
     setype: container_log_t
     state: absent
 
+#TODO: remove once applied to all env
 - name: Set SELinux context for containers
   sefcontext:
     ftype: a
     target: "{{ docker_data_root }}/containers(/.*)?"
+    setype: container_var_lib_t
+    state: absent
+
+- name: Set SELinux context for docker
+  sefcontext:
+    ftype: a
+    target: "{{ docker_data_root }}(/.*)?"
     setype: container_var_lib_t
     state: present
 
