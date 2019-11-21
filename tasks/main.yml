@@ -20,6 +20,10 @@
     mode:  0644
   when: docker_container_logs_rotate
 
+- name: Allow logrotate to access container files
+  command: setsebool -VP logrotate_read_inside_containers 1
+  when: docker_container_logs_rotate
+
 #TODO: remove once applied to all env
 - name: Remove existing SELinux context
   sefcontext:
@@ -49,6 +53,13 @@
     ftype: a
     target: "{{ docker_data_root }}(/.*)?"
     setype: container_var_lib_t
+    state: present
+
+- name: Set SELinux context for docker containers
+  sefcontext:
+    ftype: a
+    target: "{{ docker_data_root }}/containers(/.*)?"
+    setype: container_file_t
     state: present
 
 - name: Set SELinux context for log files for logrotate
