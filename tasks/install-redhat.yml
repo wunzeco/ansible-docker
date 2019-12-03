@@ -34,7 +34,8 @@
 - name: Ensure all yum transactions are finished
   shell: yum clean all && yum-complete-transaction --cleanup-only
   register: yum
-  changed_when: "'No unfinished transactions left' not in yum.stdout" 
+  changed_when: "'No unfinished transactions left' not in yum.stdout"
+  ignore_errors: yes
 
 - name: Set docker package if version is specified
   set_fact:
