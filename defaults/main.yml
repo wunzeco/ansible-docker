@@ -3,8 +3,8 @@ docker_group: docker
 docker_allow_users: []      # Ensure users exist
 
 ## Package
-docker_apt_key_id: '58118E89F3A912897C070ADBF76221572C52609D'
-docker_apt_repo: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
+docker_apt_key_id: '9DC858229FC7DD38854AE2D88D81803C0EBFCD88'
+docker_apt_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
 docker_yum_gpg_key_url:  'https://yum.dockerproject.org/gpg'
 docker_yum_repo_baseurl: 'https://yum.dockerproject.org/repo/main/centos/$releasever/'
 
