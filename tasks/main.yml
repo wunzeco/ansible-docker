@@ -21,4 +21,4 @@
   when: docker_container_logs_rotate
 
 - include_tasks: selinux.yml
-  when: ansible_os_family|lower == 'redhat'
+  when: ansible_os_family|lower == 'redhat' and docker_configure_selinux

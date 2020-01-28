@@ -36,7 +36,7 @@ platforms:
       privileged: true
       run_command: /sbin/init
       provision_command:
-        - yum install -y iproute tuned epel-release ansible git python-pip
+        - yum install -y iproute tuned epel-release ansible git python-pip initscripts
         # https://github.com/CentOS/CentOS-Dockerfiles/issues/173
         - systemctl enable systemd-user-sessions.service && ln -s /usr/lib/systemd/system/systemd-user-sessions.service /etc/systemd/system/default.target.wants/systemd-user-sessions.service
 

@@ -55,3 +55,5 @@ docker_container_logs_rotate: false
 docker_data_root: "/data/docker"
 
 configure_firewalld: true
+
+docker_configure_selinux: true
