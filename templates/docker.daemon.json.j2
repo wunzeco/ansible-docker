@@ -2,4 +2,11 @@
 {% if docker_data_root|default('false') %}
     "data-root": "{{ docker_data_root }}"
 {% endif %}
+{% if docker_insecure_registries|default('false') %}
+{% set registry_list = [] %}
+{% for registry in docker_insecure_registries %}
+{{ registry_list.append('\"' + registry + '\"') }}
+{% endfor %}
+    ,"insecure-registries": [ {{ registry_list | join(', ') }} ]
+{% endif %}
 }

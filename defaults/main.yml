@@ -53,6 +53,8 @@ docker_swarm_image_version: 1.2.8
 ## Configures logrotate for /var/lib/docker/containers/*-json.log
 docker_container_logs_rotate: false
 docker_data_root: "/data/docker"
+docker_insecure_registries:
+  - "registry.tools.priority.internal:5000"
 
 configure_firewalld: true
 
