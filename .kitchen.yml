@@ -9,9 +9,9 @@ provisioner:
   require_ansible_omnibus: false
   require_ansible_repo: false
   requirements_path: requirements.yml
-  ansible_version: 2.5.6.0
+  ansible_version: 2.4.3.0
   ansible_verbose: false
-  ansible_verbosity: 2
+  ansible_verbosity: 4
   ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
   ignore_paths_from_root:
     - .kitchen
@@ -28,7 +28,7 @@ platforms:
       provision_command:
         - apt-get update
         - apt-get install -y iproute git python-pip curl
-        - pip install ansible pyopenssl
+        - pip install ansible==2.4.3 pyopenssl
   - name: centos-7.2
     driver_config:
       image: centos/systemd
@@ -36,7 +36,7 @@ platforms:
       privileged: true
       run_command: /sbin/init
       provision_command:
-        - yum install -y iproute tuned epel-release ansible git python-pip initscripts
+        - yum install -y iproute tuned epel-release ansible-2.4.2.0-2.el7.noarch git python-pip initscripts
         # https://github.com/CentOS/CentOS-Dockerfiles/issues/173
         - systemctl enable systemd-user-sessions.service && ln -s /usr/lib/systemd/system/systemd-user-sessions.service /etc/systemd/system/default.target.wants/systemd-user-sessions.service
 
