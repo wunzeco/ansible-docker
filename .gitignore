@@ -1,3 +1,4 @@
 *.swp
 .kitchen
 Gemfile.lock
+.idea/*
