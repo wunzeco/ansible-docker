@@ -19,9 +19,11 @@
   ignore_errors: yes
   register: docker_startup
 
-## to fix '"Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details'
-## issue from 20.10 onwards added below patch work
-## https://gist.github.com/reytech-dev/1cbbb158df374018be454537de32a428
+- debug: msg=docker_startup
+
+# to fix '"Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details'
+# issue from 20.10 onwards added below patch work
+# https://gist.github.com/reytech-dev/1cbbb158df374018be454537de32a428
 - name: set docker zone in firewall active zones
   shell: |
     firewall-cmd --permanent --zone=docker --change-interface=docker0
