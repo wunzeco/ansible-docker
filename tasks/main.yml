@@ -7,7 +7,7 @@
 
 - name: Restart firewalld
   service: name=firewalld enabled=yes state=restarted
-  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and {{ ansible_os_family|lower }} == "redhat"
+  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
 
 - name: Configure firewalld for docker for docker 20.10
   firewalld:
@@ -20,7 +20,7 @@
 
 - name: Restart firewalld
   service: name=firewalld enabled=yes state=restarted
-  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and {{ ansible_os_family|lower }} == "redhat"
+  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
 
 ## to fix '"Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details'
 ## issue from 20.10 onwards added below patch work
