@@ -5,22 +5,22 @@
 - name: Install docker
   include_tasks: "install-{{ ansible_os_family|lower }}.yml"
 
-- name: Restart firewalld
-  service: name=firewalld enabled=yes state=restarted
-  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
-
-- name: Configure firewalld for docker for docker 20.10
-  firewalld:
-    zone: docker
-    interface: docker0
-    permanent: yes
-    immediate: yes
-    state: enabled
-  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
-
-- name: Restart firewalld
-  service: name=firewalld enabled=yes state=restarted
-  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
+#- name: Restart firewalld
+#  service: name=firewalld enabled=yes state=restarted
+#  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
+#
+#- name: Configure firewalld for docker for docker 20.10
+#  firewalld:
+#    zone: docker
+#    interface: docker0
+#    permanent: yes
+#    immediate: yes
+#    state: enabled
+#  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
+#
+#- name: Restart firewalld
+#  service: name=firewalld enabled=yes state=restarted
+#  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
 
 ## to fix '"Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details'
 ## issue from 20.10 onwards added below patch work
@@ -33,23 +33,23 @@
 
 - name: Start docker
   service: name=docker enabled=yes state=started
-#  ignore_errors: yes
-#  register: docker_startup
+  ignore_errors: yes
+  register: docker_startup
 
-#- debug: msg="{{ docker_startup }}"
+- debug: msg="{{ docker_startup }}"
 
 # to fix '"Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details'
 # issue from 20.10 onwards added below patch work
 # https://gist.github.com/reytech-dev/1cbbb158df374018be454537de32a428
-#- name: set docker zone in firewall active zones
-#  shell: |
-#    firewall-cmd --permanent --zone=docker --change-interface=docker0
-#    systemctl restart firewalld
-#  when: "docker_package_version == 20.10.8-3.el7.x86_64 and  {{ docker_startup.failed }} == true"
-#
-#- name: Start docker again
-#  service: name=docker enabled=yes state=started
-#  when: "docker_package_version == 20.10.8-3.el7.x86_64 and  {{ docker_startup.failed }} == true"
+- name: set docker zone in firewall active zones
+  shell: |
+    firewall-cmd --permanent --zone=docker --change-interface=docker0
+    systemctl restart firewalld
+  when: docker_package_version == "20.10.8-3.el7.x86_64" and  "{{ docker_startup.failed }}" == "true"
+
+- name: Start docker again
+  service: name=docker enabled=yes state=started
+  when: docker_package_version == "20.10.8-3.el7.x86_64" and  "{{ docker_startup.failed }}" == "true"
 
 - meta: flush_handlers
 
