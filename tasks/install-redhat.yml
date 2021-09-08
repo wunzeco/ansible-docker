@@ -116,7 +116,7 @@
     permanent: yes
     immediate: yes
     state: enabled
-  when: "configure_firewalld and 'docker0' not in firewall_result.stdout and docker_package_version != 20.10.8-3.el7.x86_64"
+  when: configure_firewalld and 'docker0' not in firewall_result.stdout and docker_package_version != "20.10.8-3.el7.x86_64"
 
 - name: Configure firewalld for docker for docker 20.10
   firewalld:
@@ -125,7 +125,7 @@
     permanent: yes
     immediate: yes
     state: enabled
-  when: "configure_firewalld and docker_package_version == 20.10.8-3.el7.x86_64"
+  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64"
 
 - name: Check firewalld configuration
   shell: firewall-cmd --list-ports

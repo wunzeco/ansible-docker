@@ -28,11 +28,11 @@
 #  shell: |
 #    firewall-cmd --permanent --zone=docker --change-interface=docker0
 #    systemctl restart firewalld
-#  when: "docker_package_version == 20.10.8-3.el7.x86_64 and  {{ docker_startup.state }} != started"
+#  when: "docker_package_version == 20.10.8-3.el7.x86_64 and  {{ docker_startup.failed }} == true"
 #
 #- name: Start docker again
 #  service: name=docker enabled=yes state=started
-#  when: "docker_package_version == 20.10.8-3.el7.x86_64 and  {{ docker_startup.state }} != started"
+#  when: "docker_package_version == 20.10.8-3.el7.x86_64 and  {{ docker_startup.failed }} == true"
 
 - meta: flush_handlers
 
