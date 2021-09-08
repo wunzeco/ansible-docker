@@ -12,7 +12,7 @@
     permanent: yes
     immediate: yes
     state: enabled
-  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and {{ ansible_os_family|lower }} == "redhat"
+  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
 
 - name: Restart firewalld
   service: name=firewalld enabled=yes state=restarted
