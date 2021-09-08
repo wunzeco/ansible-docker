@@ -51,8 +51,6 @@
   service: name=docker enabled=yes state=started
   when: docker_package_version == "20.10.8-3.el7.x86_64" and docker_startup.failed
 
-- fail: msg= "Failed for testing"
-
 - meta: flush_handlers
 
 - include_tasks: swarm.yml
