@@ -5,6 +5,10 @@
 - name: Install docker
   include_tasks: "install-{{ ansible_os_family|lower }}.yml"
 
+- name: Restart firewalld
+  service: name=firewalld enabled=yes state=restarted
+  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and {{ ansible_os_family|lower }} == "redhat"
+
 - name: Configure firewalld for docker for docker 20.10
   firewalld:
     zone: docker
