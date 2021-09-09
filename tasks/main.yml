@@ -36,7 +36,7 @@
 
 - name: Start docker again
   service: name=docker enabled=yes state=started
-  when: docker_package_version == "20.10.8-3.el7.x86_64" and docker_startup.failed
+  when: docker_startup.failed
 
 - meta: flush_handlers
 
