@@ -116,7 +116,7 @@
     permanent: yes
     immediate: yes
     state: enabled
-  when: configure_firewalld and 'docker0' not in firewall_result.stdout
+  when: "configure_firewalld and 'docker0' not in firewall_result.stdout"
 
 - name: Check firewalld configuration
   shell: firewall-cmd --list-ports
