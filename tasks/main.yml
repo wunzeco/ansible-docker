@@ -11,6 +11,7 @@
   register: docker_startup
 
 - debug: msg="{{ docker_startup }}"
+  when: docker_startup.failed
 
 # to fix '"Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details'
 # issue from 20.10 onwards added below patch work
