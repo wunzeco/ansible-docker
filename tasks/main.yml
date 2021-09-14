@@ -60,3 +60,5 @@
     special_time: weekly
     job: "docker system prune -a -f"
     cron_file: ansible_docker_system_prune
+    user: "root"
+    state: present
