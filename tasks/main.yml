@@ -53,3 +53,10 @@
 
 - include_tasks: selinux.yml
   when: ansible_os_family|lower == 'redhat' and docker_configure_selinux
+
+# Cron to clean docker cache"
+- cron:
+    name: "Docker Cache Cleanup"
+    special_time: weekly
+    job: "docker system prune -a -f"
+    cron_file: ansible_docker_system_prune
