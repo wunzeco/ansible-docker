@@ -36,9 +36,9 @@
 #  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
 
 # to fix 'Unable to start service docker: Job for docker.service failed because start of the service was attempted too often'
-- name: Pause for 5 minutes to build app cache
+- name: Pause for 15 seconds before docker startup
   pause:
-    seconds: 30
+    seconds: 15
   when: docker_startup.failed
 
 - name: Start docker again
