@@ -39,6 +39,7 @@
 - name: Pause for 5 minutes to build app cache
   pause:
     seconds: 30
+  when: docker_startup.failed
 
 - name: Start docker again
   service: name=docker enabled=yes state=started
