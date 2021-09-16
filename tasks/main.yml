@@ -20,6 +20,7 @@
   shell: |
     firewall-cmd --permanent --zone=docker --change-interface=docker0
     systemctl restart firewalld
+    systemctl reset-failed docker.service
   when: docker_package_version == "20.10.8-3.el7.x86_64" and docker_startup.failed
 
 #- name: Configure firewalld for docker for docker 20.10
@@ -36,10 +37,10 @@
 #  when: configure_firewalld and docker_package_version == "20.10.8-3.el7.x86_64" and "{{ ansible_os_family|lower }}" == "redhat"
 
 # to fix 'Unable to start service docker: Job for docker.service failed because start of the service was attempted too often'
-- name: Pause for 30 seconds before docker startup
-  pause:
-    seconds: 30
-  when: docker_startup.failed
+#- name: Pause for 30 seconds before docker startup
+#  pause:
+#    seconds: 30
+#  when: docker_startup.failed
 
 - name: Start docker again
   service: name=docker enabled=yes state=started
