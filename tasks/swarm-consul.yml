@@ -2,15 +2,12 @@
 
 ## swarm-manager
 - name: Set docker swarm manager container command for consul backend
-  set_fact: 
+  set_fact:
     docker_swarm_manager_command_args:
       "-H :{{ docker_swarm_port }} --replication \
       --advertise {{ docker_swarm_host_ip }}:{{ docker_swarm_port }}"
   when: docker_swarm_manager
 
-## Fix for the issue cause due to the latest version of websocket client, docker operation were failing for docker-py lib
-- name: install websocket-client 0.59.0 version
-  shell: pip install websocket-client==0.59.0
 
 - name: Start swarm manager container
   docker_container:
@@ -28,7 +25,7 @@
 
 ## swarm-node
 - name: Set docker swarm node container command for consul backend
-  set_fact: 
+  set_fact:
     docker_swarm_node_command_args:
       "--advertise {{ docker_swarm_host_ip }}:{{ docker_engine_port }}"
   when: docker_swarm_node
