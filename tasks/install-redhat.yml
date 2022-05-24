@@ -83,6 +83,10 @@
 - name: install websocket-client 0.59.0 version
   shell: pip install websocket-client==0.59.0
 
+## Fix for the issue cause due to the latest version of certifi , docker operation were failing for docker-py lib
+- name: install certifi 2021.10.8 version
+  shell: pip install certifi==2021.10.8
+
 - name: Install docker api client
   pip: name=docker version={{ docker_api_version }} state=present
   when: docker_api_install
