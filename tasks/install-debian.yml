@@ -14,11 +14,25 @@
 - name: Add docker apt key
   apt_key: keyserver=keyserver.ubuntu.com id={{ docker_apt_key_id }}
 
+- name: ubuntu22 repo | no apt key
+  get_url:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    dest: /etc/apt/keyrings/docker.asc
+
 - name: Add docker apt repo to sources list
   apt_repository: repo="{{ docker_apt_repo }}" update_cache=yes state=present
 
 - name: Ensure lxc-docker is not installed
-  apt: name=lxc-docker state=absent purge=yes
+  apt: name={{ item }} state=absent purge=yes
+  with_items:
+    - lxc-docker
+    - lxd-installer
+
+- name: Ensure lxd-docker is not installed
+  snap: name=lxd state=absent
+
+- name: Ensure nftables is not installed
+  apt: name=nftables state=absent purge=yes
 
 - name: Install recommended linux-image-extra kernel packages
   apt: name="{{ item }}" state=present
