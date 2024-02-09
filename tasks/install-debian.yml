@@ -34,6 +34,9 @@
 - name: Ensure nftables is not installed
   apt: name=nftables state=absent purge=yes
 
+- name: Reload systemd
+  command: systemctl daemon-reload
+
 - name: Install recommended linux-image-extra kernel packages
   apt: name="{{ item }}" state=present
   with_items:
