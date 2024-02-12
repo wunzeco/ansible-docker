@@ -32,6 +32,9 @@
 - name: Ensure lxd-docker is not installed
   snap: name=lxd state=absent
 
+- name: stop nftables service
+  service: name=nftables state=stopped
+
 - name: Ensure nftables is not installed
   apt: name=nftables state=absent purge=yes
 
