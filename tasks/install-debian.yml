@@ -14,10 +14,11 @@
 - name: Add docker apt key
   apt_key: keyserver=keyserver.ubuntu.com id={{ docker_apt_key_id }}
 
-- name: ubuntu22 repo | no apt key
+- name: Ubuntu22 apt repo key
   get_url:
     url: "https://download.docker.com/linux/ubuntu/gpg"
     dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
 
 - name: Add docker apt repo to sources list
   apt_repository: repo="{{ docker_apt_repo }}" update_cache=yes state=present
@@ -33,9 +34,6 @@
 
 - name: Ensure nftables is not installed
   apt: name=nftables state=absent purge=yes
-
-- name: Reload systemd
-  command: systemctl daemon-reload
 
 - name: Install recommended linux-image-extra kernel packages
   apt: name="{{ item }}" state=present
@@ -137,6 +135,10 @@
     - Reload systemd
     - Restart docker
 
-- name: Reload systemd if docker service supplementary config file changes
+- name: Reload systemd
   command: systemctl daemon-reload
-  when: supplementary is changed and ansible_distribution_major_version|int >= 16
+
+#- name: Reload systemd if docker service supplementary config file changes
+#  command: systemctl daemon-reload
+#  when: supplementary is changed and ansible_distribution_major_version|int >= 16
+
