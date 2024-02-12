@@ -35,6 +35,9 @@
 - name: Ensure nftables is not installed
   apt: name=nftables state=absent purge=yes
 
+- name: Reload systemd
+  command: systemctl daemon-reload
+
 - name: Install recommended linux-image-extra kernel packages
   apt: name="{{ item }}" state=present
   with_items:
@@ -135,10 +138,7 @@
     - Reload systemd
     - Restart docker
 
-- name: Reload systemd
+- name: Reload systemd if docker service supplementary config file changes
   command: systemctl daemon-reload
-
-#- name: Reload systemd if docker service supplementary config file changes
-#  command: systemctl daemon-reload
-#  when: supplementary is changed and ansible_distribution_major_version|int >= 16
+  when: supplementary is changed and ansible_distribution_major_version|int >= 16
 
