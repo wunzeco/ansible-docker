@@ -51,10 +51,20 @@
     state: absent
   when: docker_package != "docker-engine"
 
+- name: Set docker package if version is specified
+  set_fact:
+    _docker_package: "{{ docker_package }}={{ docker_package_version }}"
+  when: docker_package_version != '*'
+
 - name: Install docker package
   apt:
-    name: "{{ docker_package }}={{ docker_package_version|default('*') }}"
+    name: "{{ _docker_package|default(docker_package) }}"
     state: present
+
+#- name: Install docker package
+#  apt:
+#    name: "{{ docker_package }}={{ docker_package_version|default('*') }}"
+#    state: present
 
 # WARN: docker-compose pip package >= 1.10.0 installs docker pip package which
 #       conflicts with docker-py required by Ansible docker_container module.
